@@ -1,0 +1,19 @@
+Package: DoubleRobGam
+Title: Double Robust Generalised Additive Models
+Version: 0.1
+Authors@R: "Ilaria Prosdocimi <ilapro@ceh.ac.uk> [aut, cre]"
+Description: Functions to estimate smooth and robust mean and variance
+    functions within the Double Exponential Family framework
+Depends:
+    R (>= 3.1.0)
+Imports:
+    MASS,
+    splines,
+    robustbase
+Suggests:
+    SemiPar,
+    knitr
+License: MIT + file LICENSE
+LazyData: false
+Roxygen: list(wrap = FALSE)
+VignetteBuilder: knitr

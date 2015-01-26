@@ -1,0 +1,296 @@
+\documentclass{article}
+%\VignetteEngine{knitr::knitr} 
+%\VignetteIndexEntry{Introducing DoubleRobGam}
+
+
+\newcommand{\gx}{\mbox{\boldmath $x$}}
+\newcommand{\gX}{\mbox{\boldmath $X$}}
+\newcommand{\galpha}{\mbox{\boldmath $\alpha$}}
+
+\title{Introducing the DoubleRobGam library}
+\author{Ilaria Prosdocimi}
+\begin{document}
+
+\maketitle
+
+This document discusses the use of the \verb DoubleGam  and \verb DoubleRobGam functions. 
+These functions used to be available at \verb http://wis.kuleuven.be/stat/codes.html .   
+The background information on the two functions can be found in
+
+
+\ 
+
+\noindent
+Prosdocimi, I. (2010). Smooth and robust estimation of mean and dispersion functions in regression models. PhD thesis, KULeuven, available at 
+
+https://lirias.kuleuven.be/handle/123456789/280610
+
+\ 
+
+\noindent
+and this document is based on Chapter 6 of the thesis. 
+The thesis itself was mostly based on the following papers: 
+
+\begin{description}
+\item Gijbels, I. and Prosdocimi, I. (2012). Flexible Mean and Dispersion Function Estimation in Extended Generalized Additive Models, {\em Communications in Statistics - Theory and Methods}, \textbf{41}, DOI: 10.1080/03610926.2012.654881
+
+\item Croux, C., Gijbels, I. and Prosdocimi, I. (2012).  Robust Estimation of Mean and Dispersion Functions in Extended Generalized Additive Models. {\em Biometrics}, {\textbf{268}}, 31-44. doi: 10.1111/j.1541-0420.2011.01630.x.
+
+\item  Gijbels I. and  Prosdocimi I. (2011). Smooth estimation of mean and dispersion function in extended Generalized Additive Models with application to Italian Induced Abortion data. {\em Journal of Applied Statistics}. {\textbf{38}}. DOI: 10.1080/02664763.2010.550039
+
+\item Gijbels, I., Prosdocimi, I. and  Claeskens, G. (2010). Nonparametric estimation of mean and dispersion functions in extended Generalized Linear Models. {\em Test}, {\textbf{19}}. DOI:10.1007/s11749-010-0187-1
+\end{description}
+
+
+In the first part of this document we present the function used to fit models for the mean and the dispersion functions presented in Gijbels and Prosdocimi (2011): the \verb DoubleGam  function. Robust models for mean and dispersion functions as presented in Croux \textit{et al.} (2012) can be obtained via the \verb DoubleRobGam   function which is discussed in the second part of this document. 
+
+
+The thesis and the papers mentioned above discuss in detail how Double Robust Generlised Additive Models are placed within the Generalised Additive Models and the robust modelling frameworks. Readers non familiar with Generalised Additive Models are referred to 
+
+Wood, S. W. (2006). \textit{Generalized Additive Models: An Introduction with R}, CRC Press.
+
+\noindent
+while basic background information for robust methods can be found in:
+
+Heritier, S., E. Cantoni, S. Copt and M.-P. Victoria-Feser (2009). \textit{Robust Methods in Biostatistics}. Wiley, Series in Probability and Statistics
+
+<<echo=FALSE>>=
+library(DoubleRobGam)
+# source("..//R//DoubleRobGam.R")
+# source("..//R//robFunctions.R")
+# source("..//R//generalFunctions.R")
+@
+
+\section{The DoubleGam function}
+\label{sec:DoubleGam}
+The \verb DoubleGam  function allows the user to obtain an estimate for both the mean and the dispersion function, basically implementing the methods presented in Gijbels and Prosdocimi (2010) and Gijbels and Prosdocimi (2011). 
+
+The \verb DoubleGam  function can fit semi-parametric models in which some covariates enter the model parametrically and others flexibly (i.e. nonparametrically). We use the Ragweed data from the library \verb SemiPar  to present how to use the \verb DoubleGam  function. The minimal requested argument to be specified in the function is the mean regression model (\verb formulaM).   If only this is specified a GAM model for the mean function will be estimated.
+Below we fit a parametric quadratic model for the mean of the Ragweed data: 
+<<ragweeed,cache=TRUE>>=
+library(SemiPar);data(ragweed)
+ragweed<-ragweed[ragweed$year==1991,]  # day.in.seas
+ragweed<-ragweed[order(ragweed$day.in.seas),] # for plotting
+
+rag1a<-DoubleGam(formulaM=ragweed ~ day.in.seas+I(day.in.seas^2),
+       data=ragweed,family="poisson",selection="none")
+@
+The \verb formulaM  argument works like the classical formula for a regression model. The \verb selection  argument is used to define which criterion we wish to use to select the smoothing parameter value and can take values \verb GCV,  \verb AIC  and \verb none.  The default value is \verb GCV,  so when we only use parametric functions in the model we should change this to \verb none,  since no smoothing parameter needs to be selected. The type of distribution used in order to fit the data is specified via the \verb family  argument, as in the standard \verb glm  function. At the moment the \verb DoubleGam  function can fit models belonging to the \verb poisson,  the \verb binomial  and the \verb gaussian  families, the last one being the default value. 
+
+
+To have a flexible fit rather than a parametric shape, the \verb bsp  is used in the \verb formulaM  argument. \verb bsp builds the necessary B-splines base matrix and the appropriate penalty matrix, with a coding similar to the one proposed by Eilers and Marx (1996). 
+<<eval=TRUE,cache=TRUE>>=
+rag1b <- DoubleGam(ragweed ~ bsp(day.in.seas),
+                   data = ragweed, family="poisson")
+@
+The fitted functions can be plotted with the following command (the figure obtained is displayed in Figure~\ref{plotWeed})
+
+\begin{figure}[h]
+<<plotWeed>>=
+par(mfrow=c(1,1), bty = "l", lwd=2)
+plot(ragweed$day.in.seas, ragweed$ragweed ,pch=19, col=8)
+lines(ragweed$day.in.seas, rag1a$fitted.values, lty=2, col=4)
+lines(ragweed$day.in.seas, rag1b$fitted.values)
+legend("topright", col=c(4,1), lty = c(2,1), bty = "n", 
+      legend = c("quadratic fit", "non-parametric fit"))
+@
+\centering \vspace{-0.3cm} \caption{{\it The Ragweed data: mean and dispersion components.}}
+\label{plotWeed}
+\end{figure}
+
+\clearpage
+
+
+
+The \verb bsp  function accepts different type of arguments
+<<echo=TRUE,message=FALSE,eval=TRUE>>=
+args(bsp)
+@
+The arguments \verb nknots  and \verb p  affect the building of the B-spline bases controlling the number of internal knots and the degree of the base. The \verb order  and \verb sm.p  arguments instead deal with characteristics of the penalization: the first defines the order $m$ of the difference operator used in the penalization, while with \verb sm.p  we define the value of the smoothing parameter. If no optimal selection of the smoothing parameters is pursued, this value will be used in the fitting procedure. The \verb center  argument which indicates whether the B-splines base should be centered or not needs to be handled with care. The centering of the B-splines is done in order to avoid identifiability issues. In the case of a univariate covariate though, we do not need to worry about identifiability, and \verb DoubleGam  automatically sets \verb center=FALSE.  When more than one covariate is present in the model though, we recommend to not change the default value of this argument. 
+
+
+In order to fit both the mean and the dispersion function the \verb formulaG  argument also needs to be specified. The argument also follows the usual R formula fashion, although no dependent variable needs to be specified. For the Ragweed data we would have: 
+
+<<eval=TRUE,cache=TRUE>>=
+rag2<-DoubleGam(ragweed~bsp(day.in.seas),
+                formulaG= ~bsp(day.in.seas,nknots=14), 
+                data=ragweed, family="poisson")
+@
+Note that when \verb formulaG=~1  is specified the dispersion is estimated as a constant value rather than as a function of the covariates. This is the default behaviour if no formula is specified for \verb formulaG  . 
+
+When estimating both the mean and the dispersion function we obtain as output two \verb list  objects: \verb fitM  and \verb fitG,  each one of them containing information on the fit of either the mean function $\mu(\gx_d)$ or the dispersion function $\gamma(\gx_d)$. Along with these two lists, the output also contains some information on the convergence of the whole algorithm. The  \verb fitM  and \verb fitG  objects contain the same type of objects for the mean and the dispersion estimation.
+%  (the \verb M  and the \verb G  in the name in fact stand for $(\mu)$ and $(\gamma)$). 
+
+
+<<eval=TRUE,cache=TRUE>>=
+names(rag2)
+names(rag2$fitM)
+names(rag2$fitG)
+@
+
+Most of these objects are the ones we would expect to find in a regression model output in R and can be used in the usual way. It is worth to mention that \verb s.resid  contains the standardized Pearson residuals and that \verb deviance  contains the standardized deviance residuals. \verb sm.p  gives information on the smoothing parameters used in the fitting, while \verb df  and \verb vecdf  give information about the total and the componentwise number of equivalent degrees freedom. 
+
+To plot the estimated mean and dispersion function simply type 
+\begin{figure}[h]
+<<RagweedMeanDisp, fig.show='asis',fig.align='center',cache=TRUE>>=
+par(mfrow=c(2,1),mai = c(0.3,0.3,0.3,0.3))
+plot(ragweed$day.in.seas,rag2$fitM$fitted, type= "l")
+### add the result obtained if no dispersion is estimated
+lines(ragweed$day.in.seas,rag1b$fitted,lty=2, type= "l", col=4)
+plot(ragweed$day.in.seas,rag2$fitG$fitted, type= "l")
+@
+\centering \vspace{-0.3cm} \caption{{\it The mean and dispersion function estimate .}}
+\label{RagweedMeanDisp}
+\end{figure}
+\clearpage
+
+DoblelGam outputs belong to the S3 \verb gamMD  class, for which \verb plot  \verb summary  and \verb print  functions exist. Additive components of the estimated mean and dispersion functions can be plotted simply using
+
+\begin{figure}[h]
+<<RagweedMeanDispDirect, fig.show='asis',fig.align='center'>>=
+plot(rag2)
+@
+\centering \vspace{-0.3cm} \caption{{\it The mean and dispersion functions estimate.}}
+\label{fig:RagweedMeanDispDirect}
+\end{figure}
+
+The \verb summary  and  \verb print  function are also available for the \verb gamMD  class. 
+<<>>=
+class(rag2)
+summary(rag2)
+rag2
+@
+
+The \verb print  function prints out information similar to the ones given by \verb summary.  The \verb plot  function plots the appropriately transformed and centered data with each of the separate mean and the dispersion components. By default the mean components are plotted above and the dispersion ones in the lower part of the graphical device (see Figure~\ref{fig:RagweedMeanDispDirect}). If the \verb one  argument is set to \verb FALSE  two graphical devices will be displayed: one for the mean components and one for the dispersion ones.
+
+
+
+
+To further illustrate the use of \verb DoubleGam  we use the US temperature data from the \verb SemiPar  library. 
+To estimate a fit for both the mean and the dispersion of the average minimum January temperature as functions of the latitude and the longitude we use
+<<collapse=TRUE,cache=TRUE>>=
+library(SemiPar);data(ustemp)
+temp1<-DoubleGam(formulaM=min.temp~bsp(latitude,p=2,nknots=8,sm.p=0.006)+
+                           bsp(longitude,p=2,nknots=7,sm.p=0.034),
+                 formulaG=~bsp(latitude,p=2,nknots=6,sm.p=1400)+
+                           bsp(longitude,p=2,nknots=6,sm.p=17000),
+                 selection="GCV",trace=TRUE,data=ustemp)
+@
+
+A \verb control  option can be used in order to keep some key points of the estimation procedure under control via an auxiliary function \verb DoubleGamControl.  We can for example force the function to perform a limited number of inner iterations for the estimation of either the $\galpha_{\mu}$ or the $\galpha_{\gamma}$ and outer iterations for the global two steps algorithm. This can be done by setting respectively the \verb maxitM,  \verb maxitG  and \verb maxitOUT  options to the desired number. 
+<<cache=TRUE>>=
+temp1<-DoubleGam(formulaM=min.temp~bsp(latitude,nknots=9,p=2)+
+                           bsp(longitude,nknots=9,p=2,sm.p=0.2),
+                 formulaG=~bsp(latitude,p=2,nknots=8)+
+                           bsp(longitude,p=2,nknots=8,sm.p=0.54),
+                 data=ustemp,
+          control=DoubleGamControl(maxitM=25,maxitG=25,maxitOUT=5))
+@
+
+Also, we can change the level of accuracy requested to obtain convergence both for the inner and the outer iterations by changing the \verb tol  and the \verb acc  option. See for example how by changing the \verb acc  option in the estimation above we do not get a warning about non convergence of the algorithm after 5 iterations: 
+<<cache=TRUE>>=
+temp1<-DoubleGam(formulaM=min.temp~bsp(latitude,nknots=9,p=2)+
+                                   bsp(longitude,nknots=9,p=2,sm.p=0.2),
+                 formulaG=~bsp(latitude,p=2,nknots=8)+
+                           bsp(longitude,p=2,nknots=8,sm.p=0.54),
+                 data=ustemp,
+      control=DoubleGamControl(maxitM=25,maxitG=25,maxitOUT=5,acc=0.07))
+@
+
+Finally, we can force the value automatically chosen for the smoothing parameters to not exceed or to not go lower than some given limits via the \verb lambdaM  and \verb lambdaG  options:
+<<cache=TRUE>>=
+temp1 <- DoubleGam(formulaM=min.temp~bsp(latitude,nknots=9,p=2)+
+                                   bsp(longitude,nknots=9,p=2,sm.p=0.2),
+                 formulaG=~bsp(latitude,p=2,nknots=8)+
+                           bsp(longitude,p=2,nknots=8,sm.p=0.54),
+                 data=ustemp,
+         control=DoubleGamControl(lambdaM=c(.05,200),
+                                  lambdaG=c(.3,14),maxitOUT=4))
+
+@
+
+Changing one or more of the parameters in the \verb DoubleGamControl  function can affect quite significantly the final result. Even if for particular data analysis it can be necessary to change some of the default values to avoid convergence issues or to make the procedure faster, the \verb control  option should be used with extra care. 
+
+
+The default values for the \verb DoubleGamControl  function are: 
+<<>>=
+args(DoubleGamControl)
+@
+
+
+
+
+
+\section{The DoubleRobGam function}
+\label{sec:DoubleRobGam}
+The \verb DoubleRobGam  function builds on the \verb DoubleGam  function and allows the user to model the mean and eventually the dispersion function as a nonparametric \textit{and robust} function of one or more covariates, thus implementing the methods presented in Croux \textit{et al.} (2013). In order to modify \verb DoubleGam  to allow also for robust modelling we relied on the functionalities implemented in \verb robustbase,  the standard R library for robust methods. In particular we used some of the code of the \verb glmrob  function which implements the parametric methods presented by Cantoni and Ronchetti (2001a). 
+
+
+
+The usage and the possible options of \verb DoubleRobGam  are very similar to the ones that were already presented for the \verb DoubleGam  function, most of the differences lie in the possibility of specifying how robust should the estimate be via the choice of the tuning constant $c$ in the Huber function and in the choice of whether the smoothing parameter selection should be performed via a robust criterion. Possible values for the \verb selection  option in fact are, beside the standard `none' `GCV' and `AIC', also `RGCV' and `RAIC' (see Croux \textit{et al.} (2013)) with `RGCV' as a default choice.
+
+Robust and smooth estimates for the mean and the dispersion function for the US temperature data can be obtained via:
+<<cache=TRUE>>=
+tempRob1<-DoubleRobGam(min.temp~bsp(latitude,nknots=9,p=2)+
+                                bsp(longitude,nknots=9,p=2),
+          formulaG=~bsp(latitude,p=2,nknots=8)+
+          bsp(longitude,p=2,nknots=8),data=ustemp)
+@
+
+Since the class of models fitted via \verb DoubleRobGam  is also `gamMD', \verb plot \verb print  and \verb summary  can be used. 
+<<>>=
+summary(tempRob1)
+@
+
+ 
+
+
+\begin{figure}[h]
+<<ustempMeanVarRob, fig.show='asis',fig.align='center'>>=
+plot(tempRob1) 
+@
+\centering \vspace{-0.3cm} \caption{{\it Robust estimates of the mean and dispersion function estimates.}}
+\label{ustempMeanVarRob}
+\end{figure}
+\clearpage
+
+The robustness of the estimation is governed by the tuning constant $c$ of the Huber function $\psi_c(x)$: 
+\begin{equation}
+\label{for:HuberFun}
+\psi_c(x) = \left\{ \begin{array}{ll}
+x   & \mbox{if } |x| \leq c  \\
+c \ \mbox{sign}(x)   & \mbox{if } |x| > c \; .
+\end{array} \right.
+\end{equation}
+Lower (respectively higher) values of $c$ correspond to more (respectively less) robust methods. The default value for $c$ is $1.345$, if one would like to have estimates which are more robust to outliers, this value should be decreased with the \verb control  option via the auxiliary function \verb DoubleRobGamControl.  This control function has, besides the same options as \verb DoubleGamControl,  also a \verb tccM  and a \verb tccG  option which govern the tuning constant $c$ value for respectively the mean and the dispersion function estimation. If one wishes to fit a model with tuning constants equal to, for example, $c=1.2$ and $c=1.8$ for respectively the mean and the dispersion function estimation, the necessary coding would be:
+<<cache=TRUE>>=
+tempRob2<-DoubleRobGam(min.temp~bsp(latitude,nknots=9,p=2)
+    +bsp(longitude,nknots=9,p=2),
+    formulaG=~bsp(latitude,p=2,nknots=8,sm.p=500)+
+    bsp(longitude,p=2,nknots=8,sm.p=500),data=ustemp,
+    control=DoubleRobGamControl(tccM=1.2,tccG=1.8))
+@
+The resulting fitted mean and dispersion components are depicted in Figure~\ref{fig:USrob2}. 
+
+\begin{figure}[ht]
+<<USrob2, fig.show='asis',fig.align='center'>>=
+plot(tempRob2, ci.plot = FALSE)
+@
+\centering \vspace{-0.3cm} \caption{{\it The U.S. temperature data: robust fits of the mean and dispersion components as functions of the latitude and the longitude.}}
+\label{fig:USrob2}
+\end{figure}
+\clearpage
+
+
+Comparing Figure \ref{ustempMeanVarRob} with Figure \ref{fig:USrob2}  we notice that the choice of the tuning parameter seems to mostly affect the shape of the dispersion component for the latitude, while the shapes of the other components stay approximately the same. This is not always the case, and, for some data, changing the values of the tuning constants can affect very much the final fit. 
+
+
+One of the options that the \verb DoubleRobGam  function took over from \verb glmrob  is the \verb weights.on.x  option which gives the user the possibility to also use a weight function $w(\cdot)$ that can correct the estimation procedure for leverage points. The default value is  \verb weights.on.x="none"  corresponding to $w(\cdot)=1$, with which no action is taken against leverage points. Other possible options, mutated from the \verb robustbase  package are `hat', `robCov' and `covMcd', which all provide different types of weights functions to correct for leverage points. We refer to \verb help(glmrob)  for a detailed explanation of these options. 
+
+
+% and information on the estiamtion of each function can be seen using \verb summary  
+% <<>>=
+% summary(rag2)
+% @
+
+\end{document}
