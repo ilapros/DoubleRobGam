@@ -9,7 +9,7 @@
       ######### then all the function for the dispersion estimation
       ######### the Double part comes at the end
 
-######## All functions written by Ilaria Prosdocimi (Ilaria.Prosdocimi  AT gmail DOT com)
+######## All functions written by Ilaria Prosdocimi (ilapro@ceh.ac.uk)
 
 
 ############### mean estimation

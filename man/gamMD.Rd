@@ -3,14 +3,8 @@
 \name{gamMD}
 \alias{gamMD}
 \alias{plot.gamMD}
-\alias{print.gamMD}
-\alias{summary.gamMD}
 \title{Double Generalised Additive Models class}
 \usage{
-\method{print}{gamMD}(object)
-
-\method{summary}{gamMD}(object, ...)
-
 \method{plot}{gamMD}(object, col = 1, xlab = NULL, ylab = "yt",
   one = TRUE, conf.level = 0.05, ci.plot = TRUE, ...)
 }
