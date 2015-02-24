@@ -457,20 +457,22 @@ gamDisp<-function(formula,start=NULL,trace=FALSE,acc=10^-6,maxit=30,selection="G
 ######## Double estimation
 
 
+
+
 #' Setting the DoubleGam fitting defaults 
 #' 
 #' This function is used internally in the DoubleGam fitting procedure. 
 #' The function's parameters control the numerical properties of the Double fitting procedure. 
 #' Care should be taken when changing the parameters default values, things can go wrong 
-#' (but sometimes fitting doesn't work well with the initial parameters, so you'll need to fiddle aroud with this)
+#' (but sometimes fitting doesn't work well with the initial parameters, so you'll need to fiddle around with this)
 #' 
-#' @param maxitM the maximum number of itearations allowed for each inner mean estimation procedures
-#' @param maxitG the maximum number of itearations allowed for each inner dispersion estimation procedures
-#' @param tol  the level of accuarancy required for each inner mean and dispersion estimation procedure to converge
+#' @param maxitM the maximum number of iterations allowed for each inner mean estimation procedures
+#' @param maxitG the maximum number of iterations allowed for each inner dispersion estimation procedures
+#' @param tol  the level of accuracy required for each inner mean and dispersion estimation procedure to converge
 #' @param acc the level of accuracy required for the outer iteration to converge 
 #' @param maxitOUT the maximum number of outer iteration allowed in the Double estimation procedure
-#' @param lambdaM range of acceptable smoothing parameter values for the mean estiamation procedure 
-#' @param lambdaG range of acceptable smoothing parameter values for the dispersion estiamation procedure 
+#' @param lambdaM range of acceptable smoothing parameter values for the mean estimation procedure 
+#' @param lambdaG range of acceptable smoothing parameter values for the dispersion estimation procedure 
 #' @return a list of control parameters
 #' @export
 DoubleGamControl<-function(maxitM=30,maxitG=30,tol=10^-5,acc=5*10^-3,maxitOUT=55,lambdaM=c(0.0001,35500),lambdaG=c(0.0001,13500)){
