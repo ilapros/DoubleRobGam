@@ -7,7 +7,7 @@
 DoubleGam(formulaM, formulaG = NULL, family = "gaussian", data,
   startM = NULL, startG = NULL, method = "quasi", selection = "GCV",
   weights = NULL, control = DoubleGamControl(), trace = FALSE,
-  scale = 1, conf.type = "baysian", ...)
+  scale = 1, conf.type = "bayesian", ...)
 }
 \arguments{
 \item{formulaM}{the mean formula - typically of the type y ~ bs(x1) + bs(x2). Parametric models or mixtures of
@@ -37,6 +37,8 @@ as response variables when fitting the dispersion function}
 \item{trace}{should a trace to follow the convergence be printed? Default is FALSE}
 
 \item{scale}{similar to weigth, to be used if the dispersion function should be kept fixed}
+
+\item{conf.type}{character describing how to compute confidence intervals for the smooth components; can "bayesian" (default) or "naive" as per Wood (2006)}
 }
 \value{
 An object of the \code{\link{gamMD}} class.
@@ -75,6 +77,11 @@ A function to estimate both the mean and the dispersion function using B-splines
 }
 \author{
 Ilaria Prosdocimi (ilapro@ceh.ac.uk)
+}
+\references{
+Gijbels, Prosdocimi and Claeskens (2010), Nonparametric estimation of mean and dispersion functions in extended generalized linear models, Test, 19(3), 560-608, doi:10.1007/s11749-010-0187-1,
+
+Gijbels and Prosdocimi (2011), Smooth estimation of mean and dispersion function in extended generalized additive models with application to Italian induced abortion data, Journal of Applied Statistics, 38(11), 2391-2411, doi:10.1080/02664763.2010.550039
 }
 \seealso{
 \code{\link{DoubleGamControl}}, \code{\link{DoubleRobGam}}, \code{\link{gamMD}}
