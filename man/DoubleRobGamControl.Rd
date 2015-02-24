@@ -9,11 +9,11 @@ DoubleRobGamControl(maxitM = 35, maxitG = 35, tol = 10^-7, acc = 5 *
   3500), lambdaG = c(1e-04, 3500))
 }
 \arguments{
-\item{maxitM}{the maximum number of itearations allowed for each inner mean estimation procedures}
+\item{maxitM}{the maximum number of iterations allowed for each inner mean estimation procedures}
 
-\item{maxitG}{the maximum number of itearations allowed for each inner dispersion estimation procedures}
+\item{maxitG}{the maximum number of iterations allowed for each inner dispersion estimation procedures}
 
-\item{tol}{the level of accuarancy required for each inner mean and dispersion estimation procedure to converge}
+\item{tol}{the level of accuracy required for each inner mean and dispersion estimation procedure to converge}
 
 \item{acc}{the level of accuracy required for the outer iteration to converge}
 
@@ -23,17 +23,17 @@ DoubleRobGamControl(maxitM = 35, maxitG = 35, tol = 10^-7, acc = 5 *
 
 \item{tccG}{the tuning constant c used in the robust estimation of the dispersion function}
 
-\item{lambdaM}{range of acceptable smoothing parameter values for the mean estiamation procedure}
+\item{lambdaM}{range of acceptable smoothing parameter values for the mean estimation procedure}
 
-\item{lambdaG}{range of acceptable smoothing parameter values for the dispersion estiamation procedure}
+\item{lambdaG}{range of acceptable smoothing parameter values for the dispersion estimation procedure}
 }
 \value{
 a list of control parameters
 }
 \description{
 This function is used internally in the DoubleRobGam fitting procedure.
-The function's parameters control the numerical properties of the Double fitting procedure.
+The function's parameters control the numerical properties of the Double Robust fitting procedure.
 Care should be taken when changing the parameters default values, things can go wrong
-(but sometimes fitting doesn't work well with the initial parameters, so you'll need to fiddle aroud with this)
+(but sometimes fitting doesn't work well with the initial parameters, so you'll need to fiddle around with this)
 }
 

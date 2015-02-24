@@ -178,10 +178,11 @@ rdoublepois<-function(size=1,lambda,gamma=1){
 #' @param n number of trials (called \code{size} in \code{rbinom})
 #' @param prob vector of probabilities
 #' @param theta dispersion parameter/function. \code{theta = 1} (the default) corresponds to the Binomial distribution
-#' 
-#' @export
 #' @importFrom splines splineDesign
 #' @importFrom MASS ginv
+#' @importFrom robustbase covMcd
+#' 
+#' @export
 rdoublebinom<-function(size,n,prob,theta){
 prob<-rep(prob,l=size);res<-list()
 theta<-rep(theta,l=size)

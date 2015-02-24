@@ -43,9 +43,8 @@ Temporary Items
 
 
 # wrong name folder - it has the old chapter
-/Vignette
+/oldVignette
 
 # some files left to try things out
-DoubleRobGam.R
 toy*
 .Rproj.user
