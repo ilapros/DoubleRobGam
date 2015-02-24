@@ -1,8 +1,9 @@
 
 
 ######## general functions for the 'gamMD' class: print summary and plot
-#' @rdname gamMD
+#' @name gamMD
 #' @export
+#'
 print.gamMD<-function(object){
   if(any(names(object)=="fitG")) {
     if (object$converged) cat("algorithm has converged in ",object$iter," iterations","\n\n")
@@ -24,7 +25,7 @@ print.gamMD<-function(object){
   }
 }
 
-#' @rdname gamMD
+#' @name gamMD
 #' @export
 summary.gamMD<-function(object, ...){
   if(any(names(object)=="fitG")) {
@@ -144,6 +145,7 @@ read.formPLOT<-function(ff,data){
 #' @param ci.plot logic value to indicate whether confidence bands should be drawn
 #' @seealso \code{\link{DoubleRobGam}}, \code{\link{DoubleGam}}
 #' @export
+
 plot.gamMD<-function(object, col=1, xlab=NULL, ylab="yt", one=TRUE, conf.level=0.05, ci.plot = TRUE, ...){
   ############ this now works and plots both parametric and nonparametric components
   ##### it has a lot of if conditions and it could be greatly improved, but it does its jobs, and plotting the parametric parts was not easy
