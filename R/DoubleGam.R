@@ -499,7 +499,6 @@ list(maxitM=maxitM,maxitG=maxitG,tol=tol,maxitOUT=maxitOUT,acc=acc,lambdaM=lambd
 #' @param trace should a trace to follow the convergence be printed? Default is FALSE
 #' @param scale similar to weigth, to be used if the dispersion function should be kept fixed
 #' @param conf.type character describing how to compute confidence intervals for the smooth components; can "bayesian" (default) or "naive" as per Wood (2006)
-#' @export
 #' @return An object of the \code{\link{gamMD}} class. 
 #' If both the mean and the dispersion function are estimated the object will contain the following elements: 
 #' \code{converged}, \code{convVec}, \code{data}, \code{fitG}, \code{fitM}, \code{iter}, \code{relE}.

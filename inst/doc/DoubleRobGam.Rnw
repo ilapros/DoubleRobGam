@@ -38,7 +38,7 @@ The thesis itself was mostly based on the following papers:
 
 \item  Gijbels I. and  Prosdocimi I. (2011). Smooth estimation of mean and dispersion function in extended Generalized Additive Models with application to Italian Induced Abortion data. {\em Journal of Applied Statistics}. {\textbf{38}}. DOI: 10.1080/02664763.2010.550039
 
-\item Gijbels, I., Prosdocimi, I. and  Claeskens, G. (2010). Nonparametric estimation of mean and dispersion functions in extended Generalized Linear Models. {\em Test}. DOI:10.1007/s11749-010-0187-1
+\item Gijbels, I., Prosdocimi, I. and  Claeskens, G. (2010). Nonparametric estimation of mean and dispersion functions in extended Generalized Linear Models. {\em Test}, {\textbf{19}}. DOI:10.1007/s11749-010-0187-1
 \end{description}
 
 
