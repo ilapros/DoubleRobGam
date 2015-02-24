@@ -182,6 +182,7 @@ rdoublepois<-function(size=1,lambda,gamma=1){
 #' @export
 #' @importFrom splines splineDesign
 #' @importFrom MASS ginv
+#' @importFrom robustbase covMcd
 rdoublebinom<-function(size,n,prob,theta){
 prob<-rep(prob,l=size);res<-list()
 theta<-rep(theta,l=size)
