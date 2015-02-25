@@ -484,7 +484,7 @@ list(maxitM=maxitM,maxitG=maxitG,tol=tol,maxitOUT=maxitOUT,acc=acc,lambdaM=lambd
 #' 
 #' A function to estimate both the mean and the dispersion function using B-splines bases. 
 #' 
-#' @param formulaM the mean formula - typically of the type y ~ bs(x1) + bs(x2). Parametric models or mixtures of 
+#' @param formulaM the mean formula - typically of the type y ~ bsp(x1) + bsp(x2). Parametric models or mixtures of 
 #' parametric and non parametric bases can be specified
 #' @param formulaG the dispersion formula - as  for formulaM, but no response variable to be specified. 
 #' \code{formulaG = ~ 1} corresponds to the estimation of the dispersion as a constant (i.e. standard GAM) 
@@ -495,7 +495,7 @@ list(maxitM=maxitM,maxitG=maxitG,tol=tol,maxitOUT=maxitOUT,acc=acc,lambdaM=lambd
 #' @param method can be "quasi" (the default) or "pseudo", according to whether deviance or pearson's residuals should be used 
 #' as response variables when fitting the dispersion function
 #' @param selection the method used to select the smoothing parameter. can be "GCV" (the default), "AIC" or 
-#' "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bs()} call.
+#' "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bsp()} call.
 #' @param weights as in glm -  to be used with care, since the data get always weigthed by the estimated variance function
 #' @param control a list to control some behaviours of the estimation procedure, see {\link{DoubleGamControl}}
 #' @param trace should a trace to follow the convergence be printed? Default is FALSE

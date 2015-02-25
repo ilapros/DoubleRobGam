@@ -10,7 +10,7 @@ DoubleGam(formulaM, formulaG = NULL, family = "gaussian", data,
   scale = 1, conf.type = "bayesian", ...)
 }
 \arguments{
-\item{formulaM}{the mean formula - typically of the type y ~ bs(x1) + bs(x2). Parametric models or mixtures of
+\item{formulaM}{the mean formula - typically of the type y ~ bsp(x1) + bsp(x2). Parametric models or mixtures of
 parametric and non parametric bases can be specified}
 
 \item{formulaG}{the dispersion formula - as  for formulaM, but no response variable to be specified.
@@ -28,7 +28,7 @@ parametric and non parametric bases can be specified}
 as response variables when fitting the dispersion function}
 
 \item{selection}{the method used to select the smoothing parameter. can be "GCV" (the default), "AIC" or
-"none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bs()} call.}
+"none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bsp()} call.}
 
 \item{weights}{as in glm -  to be used with care, since the data get always weigthed by the estimated variance function}
 

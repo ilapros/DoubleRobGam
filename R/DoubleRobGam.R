@@ -607,7 +607,7 @@ list(maxitM=maxitM,maxitG=maxitG,tol=tol,maxitOUT=maxitOUT,acc=acc,tccM=tccM,tcc
 #' A function to robustly estimate both the mean and the dispersion function using B-splines bases. 
 #' The robustification is done in a similar fashion to the robustbase::glmrob function.  
 #' 
-#' @param formulaM the mean formula - typically of the type y ~ bs(x1) + bs(x2). Parametric models or mixtures of 
+#' @param formulaM the mean formula - typically of the type y ~ bsp(x1) + bsp(x2). Parametric models or mixtures of 
 #' parametric and non parametric bases can be specified
 #' @param formulaG the dispersion formula - as  for formulaM, but no response variable to be specified. 
 #' \code{formulaG = ~ 1} corresponds to the estimation of the dispersion as a constant (i.e. standard GAM) 
@@ -618,7 +618,7 @@ list(maxitM=maxitM,maxitG=maxitG,tol=tol,maxitOUT=maxitOUT,acc=acc,tccM=tccM,tcc
 #' @param method can be "quasi" (the default) or "pseudo", according to whether deviance or pearson's residuals should be used 
 #' as response variables when fitting the dispersion function
 #' @param selection the method used to select the smoothing parameter. 
-#' can be "RGCV" (the default), "RAIC", "GCV", "AIC" or "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bs()} call. 
+#' can be "RGCV" (the default), "RAIC", "GCV", "AIC" or "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bsp} call. 
 #' The RGCV and RAIC are robustified version of GCV and AIC (see Croux et al. (2012))
 #' @param weights as in glm - to be used with care, since the data get always weigthed by the estimated variance function
 #' @param control a list to control some behaviours of the estimation procedure, see {\link{DoubleRobGamControl}} 

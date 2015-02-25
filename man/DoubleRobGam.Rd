@@ -10,7 +10,7 @@ DoubleRobGam(formulaM, formulaG = NULL, family = "gaussian", data,
   weights.on.x = "none", method = "quasi", ...)
 }
 \arguments{
-\item{formulaM}{the mean formula - typically of the type y ~ bs(x1) + bs(x2). Parametric models or mixtures of
+\item{formulaM}{the mean formula - typically of the type y ~ bsp(x1) + bsp(x2). Parametric models or mixtures of
 parametric and non parametric bases can be specified}
 
 \item{formulaG}{the dispersion formula - as  for formulaM, but no response variable to be specified.
@@ -25,7 +25,7 @@ parametric and non parametric bases can be specified}
 \item{startG}{starting value for the coefficients needed to estimate the dispersion function}
 
 \item{selection}{the method used to select the smoothing parameter.
-can be "RGCV" (the default), "RAIC", "GCV", "AIC" or "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bs()} call.
+can be "RGCV" (the default), "RAIC", "GCV", "AIC" or "none", in which case no selection is done and a smoothing parameter value should be provided in the \code{bsp} call.
 The RGCV and RAIC are robustified version of GCV and AIC (see Croux et al. (2012))}
 
 \item{weights}{as in glm - to be used with care, since the data get always weigthed by the estimated variance function}
