@@ -1,5 +1,5 @@
 # DoubleRobGam
-*Ilaria Prosdocimi*   (ilapro@ceh.ac.uk) 
+*Ilaria Prosdocimi*   (prosdocimi.ilaria@gmail.com) 
 
 An R package to obtain (robust) smooth estimates for both mean and dispersion functions in extended Generalised Additive Models. The methods are presented in the PhD thesis:
 
